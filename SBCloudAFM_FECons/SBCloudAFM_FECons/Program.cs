@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.ServiceBus;
+using SBCloudAFM_FECons.Entities;
 
 namespace SBCloudAFM_FECons
 {
@@ -42,9 +43,13 @@ namespace SBCloudAFM_FECons
         static async Task ProcesadorPaq(Message msj, CancellationToken token)
         {
             //Recibir paquete
+            var objetoFE = Encoding.UTF8.GetString(msj.Body);
             try
             {
                 //Procesar Paquete
+                var paqueteFE = Newtonsoft.Json.JsonConvert.DeserializeObject<Factura>(objetoFE);
+                String cliente = paqueteFE.Cliente;
+                Console.WriteLine($"Cliente: {cliente}");
             }
             catch (Exception ex)
             {
@@ -63,6 +68,12 @@ namespace SBCloudAFM_FECons
             Console.WriteLine($"Cliente: {contexto.ClientId}");
             Console.WriteLine($"Actividad: {contexto.Action}");
             return Task.CompletedTask;
+        }
+        static bool verificarRUCCI(int cedula)
+        {
+            bool res = false;
+
+            return res;
         }
     }
 }
